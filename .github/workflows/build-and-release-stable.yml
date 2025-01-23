@@ -96,19 +96,22 @@ jobs:
         with:
           fetch-depth: 1
       - name: Debug Docker Login
+        env:
+          DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASS: ${{ secrets.DOCKER_PASSWORD }}
         run: |
           echo "Checking if Docker is running:"
           docker info || true
           echo "Checking if credentials exist (without showing them):"
-          if [ -n "${{ secrets.DOCKER_USERNAME }}" ]; then
+          if [ -n "$DOCKER_USER" ]; then
             echo "DOCKER_USERNAME is set"
-            echo "Username length: ${#DOCKER_USERNAME}"
+            echo "Username length: ${#DOCKER_USER}"
           else
             echo "DOCKER_USERNAME is empty"
           fi
-          if [ -n "${{ secrets.DOCKER_PASSWORD }}" ]; then
+          if [ -n "$DOCKER_PASS" ]; then
             echo "DOCKER_PASSWORD is set"
-            echo "Token length: ${#DOCKER_PASSWORD}"
+            echo "Token length: ${#DOCKER_PASS}"
           else
             echo "DOCKER_PASSWORD is empty"
           fi
