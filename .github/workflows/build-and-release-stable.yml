@@ -158,8 +158,7 @@ jobs:
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
-          registry: docker.io
-          username: ${{ secrets.DOCKER_USERNAME }}
+          username: drcarter123
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Docker stable and playground build & tag
         run: |
