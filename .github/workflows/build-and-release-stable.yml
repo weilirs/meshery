@@ -95,6 +95,45 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
+
+      - name: Free disk space
+        run: |
+          echo "=== Removing Directories ==="
+          
+          echo "Removing /usr/share/dotnet"
+          du -sh /usr/share/dotnet || true
+          sudo rm -rf /usr/share/dotnet
+          
+          echo "Removing /usr/local/lib/android"
+          du -sh /usr/local/lib/android || true
+          sudo rm -rf /usr/local/lib/android
+          
+          echo "Removing /opt/ghc"
+          du -sh /opt/ghc || true
+          sudo rm -rf /opt/ghc
+          
+          echo "Removing /opt/hostedtoolcache"
+          du -sh /opt/hostedtoolcache || true
+          sudo rm -rf /opt/hostedtoolcache
+          
+          echo "=== Docker Cleanup ==="
+          echo "Docker space before prune:"
+          docker system df
+          
+          echo "Running Docker system prune:"
+          docker system prune -af --volumes
+          
+          echo "Docker space after prune:"
+          docker system df
+          
+          echo "=== Additional Cleanup ==="
+          echo "Removing unused packages:"
+          sudo apt-get autoremove -y
+          sudo apt-get clean
+          
+          echo "=== Final Disk Space ==="
+          df -h
+
       - name: Debug Docker Login
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
@@ -145,43 +184,6 @@ jobs:
       #     DOCKERHUB_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       #     DOCKERHUB_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       #     DOCKERHUB_REPOSITORY: ${{ secrets.IMAGE_NAME }}
-      - name: Free disk space
-        run: |
-          echo "=== Removing Directories ==="
-          
-          echo "Removing /usr/share/dotnet"
-          du -sh /usr/share/dotnet || true
-          sudo rm -rf /usr/share/dotnet
-          
-          echo "Removing /usr/local/lib/android"
-          du -sh /usr/local/lib/android || true
-          sudo rm -rf /usr/local/lib/android
-          
-          echo "Removing /opt/ghc"
-          du -sh /opt/ghc || true
-          sudo rm -rf /opt/ghc
-          
-          echo "Removing /opt/hostedtoolcache"
-          du -sh /opt/hostedtoolcache || true
-          sudo rm -rf /opt/hostedtoolcache
-          
-          echo "=== Docker Cleanup ==="
-          echo "Docker space before prune:"
-          docker system df
-          
-          echo "Running Docker system prune:"
-          docker system prune -af --volumes
-          
-          echo "Docker space after prune:"
-          docker system df
-          
-          echo "=== Additional Cleanup ==="
-          echo "Removing unused packages:"
-          sudo apt-get autoremove -y
-          sudo apt-get clean
-          
-          echo "=== Final Disk Space ==="
-          df -h
   ctlrelease:
     name: Mesheryctl build & release
     runs-on: macos-latest
