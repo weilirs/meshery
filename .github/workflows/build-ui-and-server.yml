@@ -172,6 +172,8 @@ jobs:
         run: |
           DOCKER_BUILDKIT=1 docker build -f install/docker/Dockerfile --no-cache -t meshery:edge-latest --build-arg TOKEN=test --build-arg GIT_COMMITSHA=${GITHUB_SHA::8} --build-arg RELEASE_CHANNEL=${RELEASE_CHANNEL} .
           docker tag meshery:edge-latest meshery:edge-${GITHUB_SHA::8}
+          echo "=== After Docker Build Disk Space ==="
+          df -h
 
       # Commenting out push steps since they require secrets
       # - name: Docker edge push
