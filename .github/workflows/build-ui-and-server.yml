@@ -162,13 +162,6 @@ jobs:
           sudo rm -rf /opt/ghc
           sudo rm -rf /opt/hostedtoolcache
           
-          echo "=== Cleaning Docker ==="
-          docker system prune -af --volumes
-          
-          echo "=== Cleaning Package Manager ==="
-          sudo apt-get clean
-          sudo apt-get autoremove -y
-          
           echo "=== Final Disk Space ==="
           df -h
           
