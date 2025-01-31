@@ -17,7 +17,16 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY ui/package.json ui/package-lock.json ./
 ENV HUSKY=0
-RUN npm ci  --legacy-peer-deps --ignore-scripts 
+RUN npm ci --omit=dev --legacy-peer-deps --ignore-scripts
+
+# Then add JUST ESLint and its required plugins
+RUN npm install --save-dev --legacy-peer-deps \
+    eslint@^8.57.0 \
+    eslint-config-next@^13.1.2 \
+    eslint-config-prettier@^9.1.0 \
+    eslint-plugin-prettier@^5.2.1 \
+    eslint-plugin-react@^7.37.2
+
 FROM base-node AS meshery-ui-provider-deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
