@@ -30,7 +30,7 @@ jobs:
           fetch-depth: 1
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 18.18.0
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
       - name: Build meshery-ui and provider-ui
@@ -93,7 +93,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 18.18.0
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
       - name: Download meshery-ui artifacts
